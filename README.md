@@ -70,4 +70,4 @@ See [`.opencode/INSTALL.md`](.opencode/INSTALL.md) for detailed setup instructio
 
 ## License
 
-MIT
+Apache 2.0
