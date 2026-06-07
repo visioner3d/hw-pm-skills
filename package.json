@@ -1,0 +1,9 @@
+{
+  "name": "hw-pm-skills",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Hardware product manager multi-agent skills for AI coding assistants",
+  "main": ".opencode/plugins/hw-pm.js",
+  "keywords": ["hw-pm", "opencode", "skills", "product-management", "hardware"],
+  "license": "MIT"
+}
