@@ -69,7 +69,7 @@ product_line:
   brand_positioning: "Premium precision measurement for industrial applications"
   target_gross_margin: 0.55
   default_price_band: [200, 600]
-  key_competitors: ["SSZN"]
+  key_competitors: ["Keyence"]
 ```
 
 ### project.yaml
@@ -104,7 +104,7 @@ project:
 检查发现：
 1. 描述 "High precision 3D line laser scanner" → 无歧义 ✓
 2. 价格区间 $200-$600 → 已定义 ✓
-3. 竞品 SSZN → 已指定 ✓
+3. 竞品 Keyence → 已指定 ✓
 4. 阈值与品类匹配？→ $50M TAM 阈值对于工业激光扫描仪是否合适？
 ```
 
@@ -174,7 +174,7 @@ Context:
 - Project: L20
 - Description: High precision 3D line laser scanner
 - Price band: $200-$600
-- Key competitors: SSZN
+- Key competitors: Keyence
 
 Mandatory sections:
 1. Competitive Analysis (≥3 competitors)
@@ -253,7 +253,7 @@ line laser scanner, the core focus of the company.
 {
   "tam": { "value": 52.5, "unit": "billion", "confidence": "medium", "source": "Statista Consumer Electronics Report 2025" },
   "competitors": [
-    { "name": "SSZN", "price": 299, "confidence": "high", "source": "Amazon SSZN store" },
+    { "name": "Keyence", "price": 299, "confidence": "high", "source": "Amazon Keyence store" },
     { "name": "TechNovo", "price": 450, "confidence": "medium", "source": "TechNovo website" },
     { "name": "Globex", "price": 580, "confidence": "medium", "source": "Globex product page" }
   ]
@@ -301,7 +301,7 @@ line laser scanner, the core focus of the company.
 发现 1: 市场分析师定位 L20 为 "智能消费设备"，用户研究员定位为 "工业测量工具"
    → 定位矛盾，需要解决
 
-发现 2: 商业分析师假定 $400 ASP，但竞品 SSZN 定价 $299
+发现 2: 商业分析师假定 $400 ASP，但竞品 Keyence 定价 $299
    → ASP 假设需要验证
 
 发现 3: 战略匹配满分 (5/5)，但市场数据不完整
