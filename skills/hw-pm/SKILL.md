@@ -22,7 +22,7 @@ This skill is the **entry point** to the hw-pm skill system. It does no research
 - You already know which sub-skill applies (call it directly)
 - The task is single-agent research (use `dispatching-parallel-agents`)
 
-## The 16-Skill System
+## The 17-Skill System
 
 ```dot
 digraph hw_pm_system {
@@ -33,6 +33,7 @@ digraph hw_pm_system {
     phase4 [style=dashed, color=purple];
     phase5 [style=dashed, color=red];
     cross [style=dashed, color=gray];
+    reportnode [style=dashed, color=teal];
 
     entry [label="hw-pm (entry)", shape=doublecircle];
     init [label="hw-pm-init"];
@@ -51,17 +52,18 @@ digraph hw_pm_system {
     launch [label="hw-pm-launch", style=dashed, color=red];
     cost [label="hw-pm-cost", style=dashed, color=gray];
     triage [label="hw-pm-triage", style=dashed, color=gray];
+    report [label="hw-pm-report", style=dashed, color=teal];
 
     entry -> init [label="no config", color=red];
     entry -> spec [label="has config"];
     init -> entry;
-    spec -> clarify [style=dashed, color=blue];
-    clarify -> research [style=dashed, color=blue];
+    spec -> clarify;
+    clarify -> research;
     spec -> research;
     research -> review;
     review -> research [label="REJECT", color=red, style=dashed];
     review -> gate [label="APPROVE/CONDITIONAL"];
-    gate -> analyze [style=dashed, color=blue];
+    gate -> analyze;
     gate -> entry [label="No-Go", color=red];
     gate -> prd [label="Go → Phase 2", color=green];
     analyze -> entry;
@@ -69,19 +71,20 @@ digraph hw_pm_system {
     design -> proto;
     proto -> npi;
     npi -> launch;
-    launch -> entry [label="EOL review"];
-    proto -> cert [style=dashed, color=purple, label="parallel"];
-    cert -> npi [style=dashed, color=purple];
-    cost -> prd [style=dashed, color=gray, label="parallel"];
-    cost -> design [style=dashed, color=gray];
-    cost -> proto [style=dashed, color=gray];
-    cost -> npi [style=dashed, color=gray];
-    cost -> launch [style=dashed, color=gray];
-    triage -> prd [style=dashed, color=gray, label="parallel"];
-    triage -> design [style=dashed, color=gray];
-    triage -> proto [style=dashed, color=gray];
-    triage -> npi [style=dashed, color=gray];
-    triage -> launch [style=dashed, color=gray];
+    launch -> report;
+    report -> entry [label="EOL"];
+    proto -> cert [style=dashed, label="parallel"];
+    cert -> npi;
+    cost -> prd [style=dashed, label="parallel"];
+    cost -> design;
+    cost -> proto;
+    cost -> npi;
+    cost -> launch;
+    triage -> prd [style=dashed, label="parallel"];
+    triage -> design;
+    triage -> proto;
+    triage -> npi;
+    triage -> launch;
 }
 ```
 
@@ -102,6 +105,7 @@ digraph hw_pm_system {
 | `hw-pm-launch` | 5 | Required | NPI complete | Launch plan, channel strategy |
 | `hw-pm-cost` | 2-5 | Cross-phase | BOM data | Should-cost, cost roadmap |
 | `hw-pm-triage` | 2-5 | Cross-phase | Issues, risks | Risk register, issue tracker, ECO log |
+| `hw-pm-report` | — | Report | All artifacts | Integrated report (摘要/标准/详细) |
 
 ## State Machine & Routing
 
@@ -118,7 +122,7 @@ Check project state in order:
     → gate_reviews/*.md present?    NO  ──  hw-pm-gate
     → last gate result:
         Go     ──  set phase_status: phase_2, route hw-pm-prd
-        No-Go  ──  terminate
+        No-Go  ──  hw-pm-report (if user wants summary even for No-Go)
 
 → phase_status: phase_2 ──  hw-pm-prd (PRD complete → set phase_status: design)
 → phase_status: design  ──  hw-pm-design-review (freeze → set phase_status: validate)
@@ -127,7 +131,11 @@ Check project state in order:
 → phase_status: manufacturing ──  hw-pm-npi (NPI complete → set phase_status: launch)
 → phase_status: launch     ──  hw-pm-launch (launch complete → set phase_status: eol)
 
-Cross-phase skills run on demand:
+→ phase_status: eol ──  hw-pm-report (project complete, generate final report)
+    After report generated → prompt: "Any updates needed, or close project?"
+
+Cross-phase and report skills run on demand:
+→ hw-pm-report — load at any point for interim stakeholder reports
 → hw-pm-cost — load when BOM cost needs tracking or update
 → hw-pm-triage — load when risk/issue/ECO management needed
 ```
@@ -149,6 +157,7 @@ Cross-phase skills run on demand:
 | **NPI Lead** | 5 | Supplier readiness, pilot run, ramp | Current agent (you) |
 | **Cost Engineer** | 2-5 | Should-cost analysis, BOM cost-down | Current agent (you) |
 | **Risk Manager** | 2-5 | Risk register, issue triage, ECO tracking | Current agent (you) |
+| **Report Writer** | — | Consolidate artifacts into human-readable reports | Current agent (you) |
 
 ## Hard Gates
 
@@ -182,3 +191,5 @@ Phase 5:
 **Ignoring state:** Running review before all 8 output files exist. → Always check artifact presence first.
 
 **Skipping init:** Manually creating files instead of using hw-pm-init. → hw-pm-init ensures complete schema, correct commentary, and proper directory structure. Manual files often miss fields that downstream skills depend on.
+
+**Generating reports mid-phase:** Running hw-pm-report before Phase 1 is complete. → Report skill scans for existing artifacts. If only Phase 1 data exists, report will be Phase 1 only — which may mislead readers into thinking the project is complete.
