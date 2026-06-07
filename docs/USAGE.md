@@ -673,13 +673,71 @@ Gate Report 包含完整的 No-Go Detail 表格，列出每一项不达标的维
 
 ### 5. 技能流程必须严格按顺序执行吗？
 
-**是。** 技能间有硬门禁约束：
+**依赖按 Phase 组织，cross-phase 技能可随时介入：**
 
 ```
-hw-pm → (init?) → spec → (clarify?) → research → review → gate → (analyze?)
+Phase 1: hw-pm → (init?) → spec → (clarify?) → research → review → gate → (analyze?)
+Phase 2: (Go) → prd
+Phase 3: (prd complete) → design-review
+Phase 4: (design freeze) → prototype (+ cert 并行)
+Phase 5: (PVT pass) → npi → launch → EOL review
+Cross: cost, triage (any phase)
 ```
 
 任一前置技能未完成，后续技能无法启动。agent 加载技能时会自动检查前序产出物是否存在。
+
+---
+
+## Phase 2-5 概览
+
+Phase 1 结果为 Go 后，进入产品开发阶段。技能按 Phase 顺序执行，部分技能可并行。
+
+| Phase | 技能 | 职责 | 前序条件 |
+|-------|------|------|----------|
+| **2** | `hw-pm-prd` | PRD、技术规格、功能优先级矩阵 | Phase 1 Go |
+| **3** | `hw-pm-design-review` | ID/MD/EE/FW 多轮设计评审与冻结 | PRD 完成 |
+| **4** | `hw-pm-prototype` | EVT → DVT → PVT 验证管理 | 设计冻结 |
+| **4** | `hw-pm-cert` | 认证矩阵、合规测试（与 prototype 并行） | 设计冻结 |
+| **5** | `hw-pm-npi` | 供应商就绪、试产、爬坡计划 | PVT 通过 |
+| **5** | `hw-pm-launch` | 定价、渠道、售后、上市后复盘 | NPI 完成 |
+| **2-5** | `hw-pm-cost` | BOM 成本追踪、should-cost、cost-down（跨阶段） | 任意 |
+| **2-5** | `hw-pm-triage` | 风险登记册、问题追踪、ECO 变更（跨阶段） | 任意 |
+
+### Phase 2: PRD 定义
+
+加载 `hw-pm-prd`，输入 Phase 1 产出物，输出：
+- `artifacts/phase_2/prd.md` — 完整 PRD（背景、目标市场、用户故事、验收标准）
+- `artifacts/phase_2/technical_spec.md` — 技术规格表（性能、接口、环境）
+- `artifacts/phase_2/feature_matrix.md` — MoSCoW 优先级矩阵
+- 更新 `project.yaml phase_status: design`
+
+### Phase 3: 设计评审
+
+加载 `hw-pm-design-review`，管理 3 轮评审（概念 → 详细 → 冻结前）：
+- `artifacts/phase_3/design_review_log.md` — 会议纪要
+- `artifacts/phase_3/design_issues.md` — 问题追踪
+- `artifacts/phase_3/design_freeze.md` — 冻结签核
+- 更新 `project.yaml phase_status: validate`
+
+### Phase 4: 验证与认证
+
+加载 `hw-pm-prototype`（必需）和 `hw-pm-cert`（可选，可并行）：
+- EVT → DVT → PVT 三阶段，每阶段有 exit criteria
+- 认证矩阵覆盖所有目标市场
+- 更新 `project.yaml phase_status: manufacturing`
+
+### Phase 5: NPI 与上市
+
+加载 `hw-pm-npi` → 完成后加载 `hw-pm-launch`：
+- 供应商评估、试产、爬坡计划、定价、渠道、售后
+- 上市后 30/60/90 天复盘，6/12 个月回顾
+- 更新 `project.yaml phase_status: eol`
+
+### Cross-Phase 技能
+
+`hw-pm-cost` 和 `hw-pm-triage` 可随时加载，不依赖 phase_status：
+- 成本管理：设计阶段设定目标 BOM，原型阶段验证，量产后 cost-down
+- 风险追踪：三防机制 — 预防（风险登记册）、检测（问题追踪）、纠正（ECO）
 
 ---
 
@@ -693,3 +751,11 @@ hw-pm → (init?) → spec → (clarify?) → research → review → gate → (
 - [完备性审查 (hw-pm-review)](../skills/hw-pm-review/SKILL.md)
 - [投资决策 (hw-pm-gate)](../skills/hw-pm-gate/SKILL.md)
 - [最终审计 (hw-pm-analyze)](../skills/hw-pm-analyze/SKILL.md)
+- [PRD 定义 (hw-pm-prd)](../skills/hw-pm-prd/SKILL.md)
+- [设计评审 (hw-pm-design-review)](../skills/hw-pm-design-review/SKILL.md)
+- [原型验证 (hw-pm-prototype)](../skills/hw-pm-prototype/SKILL.md)
+- [认证合规 (hw-pm-cert)](../skills/hw-pm-cert/SKILL.md)
+- [NPI 导入 (hw-pm-npi)](../skills/hw-pm-npi/SKILL.md)
+- [上市管理 (hw-pm-launch)](../skills/hw-pm-launch/SKILL.md)
+- [成本控制 (hw-pm-cost)](../skills/hw-pm-cost/SKILL.md)
+- [风险追踪 (hw-pm-triage)](../skills/hw-pm-triage/SKILL.md)

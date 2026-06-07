@@ -8,56 +8,95 @@
 
 ## Solution
 
-构建一套 **superpowers 风格的 skills 体系** `hw-pm-skills`，将硬件产品开发流程编码为 agent 可执行的技能（skills）。Agent 通过加载技能自动执行工作流，无需 Python 框架或 CLI 工具。
+`hw-pm-skills`，将硬件产品开发流程编码为 agent 可执行的技能（skills）。Agent 通过加载技能自动执行工作流。
 
 核心理念从"构建一个 AutoGen 多智能体应用程序"转变为 **"教会 agent 如何做硬件产品管理"**。每一份 SKILL.md 就是一份 agent 可直接遵循的操作手册。
 
 ## 技能体系（Delivered）
 
-### 8 Skills Overview
+### 16 Skills Overview (Phase 1-5)
 
 ```dot
 digraph skills_overview {
     rankdir=LR;
     node [shape=box, style=rounded];
-    optional [style=dashed, color=blue];
+    phase2 [style=dashed, color=green];
+    phase3 [style=dashed, color=orange];
+    phase4 [style=dashed, color=purple];
+    phase5 [style=dashed, color=red];
+    cross [style=dashed, color=gray];
 
     entry [label="hw-pm\n入口路由", shape=doublecircle];
     init [label="hw-pm-init\n项目初始化"];
     spec [label="hw-pm-spec\n需求定义"];
     clarify [label="hw-pm-clarify\n用户澄清", style=dashed, color=blue];
     research [label="hw-pm-research\n4 Agent 并行调研"];
-    review [label="hw-pm-review\n5 层完备性审查"];
+    review [label="hw-pm-review\n5 层审查"];
     gate [label="hw-pm-gate\n投资决策"];
     analyze [label="hw-pm-analyze\n最终审计", style=dashed, color=blue];
+
+    prd [label="hw-pm-prd\nPRD 定义", style=dashed, color=green];
+    design [label="hw-pm-design-review\n设计评审", style=dashed, color=orange];
+    proto [label="hw-pm-prototype\n验证测试", style=dashed, color=purple];
+    cert [label="hw-pm-cert\n认证合规", style=dashed, color=purple];
+    npi [label="hw-pm-npi\nNPI 导入", style=dashed, color=red];
+    launch [label="hw-pm-launch\n上市管理", style=dashed, color=red];
+    cost [label="hw-pm-cost\n成本控制", style=dashed, color=gray];
+    triage [label="hw-pm-triage\n风险追踪", style=dashed, color=gray];
 
     entry -> init [label="无配置", color=red];
     entry -> spec [label="有配置"];
     init -> entry;
-    spec -> clarify [style=dashed, color=blue];
-    clarify -> research [style=dashed, color=blue];
+    spec -> clarify;
+    clarify -> research;
     spec -> research;
     research -> review;
     review -> research [label="REJECT", color=red, style=dashed];
     review -> gate [label="APPROVE/CONDITIONAL"];
-    gate -> analyze [style=dashed, color=blue];
-    gate -> entry [label="Go/No-Go 汇报"];
+    gate -> analyze;
+    gate -> entry [label="No-Go", color=red];
+    gate -> prd [label="Go → Phase 2", color=green];
     analyze -> entry;
+    prd -> design;
+    design -> proto;
+    proto -> npi;
+    npi -> launch;
+    launch -> entry [label="EOL review"];
+    proto -> cert [style=dashed, label="并行"];
+    cert -> npi;
+    cost -> prd [style=dashed, label="并行"];
+    cost -> design;
+    cost -> proto;
+    cost -> npi;
+    cost -> launch;
+    triage -> prd [style=dashed, label="并行"];
+    triage -> design;
+    triage -> proto;
+    triage -> npi;
+    triage -> launch;
 }
 ```
 
 ### 技能清单
 
-| 技能 | 类型 | 职责 | 关键机制 |
-|------|------|------|----------|
-| `hw-pm` | 入口 | 状态路由、阶段调度、角色定义 | 文件系统状态机 |
-| `hw-pm-init` | 入口 | 目录结构创建、配置模板生成、交互式字段填写 | 模板覆盖 + 优先填充 + 延迟默认值 |
-| `hw-pm-spec` | 必需 | 三级配置继承、投资阈值、需求模板 | company → product_line → project 合并 |
-| `hw-pm-clarify` | 可选 | 调研前消除需求歧义 | 单轮单问、多选优先、澄清日志 |
-| `hw-pm-research` | 必需 | 4 Agent 并行调度、数据规范 | Task 派发 + prompt 模板 + 矛盾仲裁 |
-| `hw-pm-review` | 必需 | 5 层工作流完备性审查 | REJECT/CONDITIONAL/APPROVE 三级判决 |
-| `hw-pm-gate` | 必需 | 5 维度量化投资决策 | 置信度折衷、用户确认协议 |
-| `hw-pm-analyze` | 可选 | 交付前最终一致性审计 | 只标记不修改、审计日志 |
+| 技能 | Phase | 职责 | 核心机制 |
+|------|-------|------|----------|
+| `hw-pm` | 入口 | 状态路由、阶段调度、角色定义 | 文件系统状态机 + phase_status |
+| `hw-pm-init` | 入口 | 目录创建、模板生成、字段填写 | 模板覆盖 + 交互式填充 |
+| `hw-pm-spec` | 1 | 三级配置继承、投资阈值 | company → product_line → project 合并 |
+| `hw-pm-clarify` | 1 | 调研前消除需求歧义 | 单轮单问、多选优先、澄清日志 |
+| `hw-pm-research` | 1 | 4 Agent 并行调研 | Task 派发 + prompt 模板 + 矛盾仲裁 |
+| `hw-pm-review` | 1 | 5 层完备性审查 | REJECT/CONDITIONAL/APPROVE |
+| `hw-pm-gate` | 1 | 5 维度量化投资决策 | 置信度折衷 + 用户确认 |
+| `hw-pm-analyze` | 1 | 最终一致性审计 | 只标记不修改 |
+| `hw-pm-prd` | 2 | PRD + 技术规格 + 功能排序 | MoSCoW + effort/impact 矩阵 |
+| `hw-pm-design-review` | 3 | ID/MD/EE/FW 多轮设计评审 | Design Scorecard + 问题追踪 |
+| `hw-pm-prototype` | 4 | EVT/DVT/PVT 验证管理 | 阶段 exit criteria + 缺陷趋势 |
+| `hw-pm-cert` | 4 | 认证与合规跟踪 | 认证矩阵 + 偏差管理 |
+| `hw-pm-npi` | 5 | 制造就绪与试产 | NPI 清单 + 供应商评估 + 爬坡计划 |
+| `hw-pm-launch` | 5 | 上市与售后管理 | 定价、渠道、RMA、上市后复盘 |
+| `hw-pm-cost` | 2-5 | BOM 成本管控 | Should-cost + cost-down 路线图 |
+| `hw-pm-triage` | 2-5 | 风险与问题追踪 | 三防机制（Prevent/Detect/Correct） |
 
 ## User Stories
 
@@ -183,20 +222,17 @@ digraph skills_overview {
 ## Out of Scope
 
 - Web 界面
-- Phase 2-5（产品定义、设计评审、原型与测试、量产与运营）
 - 项目管理者 Dashboard 和自动风险预警
 - 与外部企业系统（ERP/PLM）的对接
 - 多项目并发执行
 - 联网实时查询元器件价格
 - 多语言支持
-- Python/AutoGen 运行时（skills 体系不依赖特定框架）
 
 ## Further Notes
 
-- 系统以 superpowers 风格的 skills 体系交付，支持 OpenCode、Claude Code、Codex 等主流 agent 平台
-- 8 项技能覆盖从项目初始化到投资决策的完整 Phase 1 流程，含两个可选增强环节
-- 技能按严格线性依赖组织：入口 → (init?) → spec → (clarify?) → research → review → gate → (analyze?)
+- 支持 OpenCode、Claude Code、Codex 等主流 agent 平台
+- 16 项技能覆盖从项目初始化到产品上市的完整硬件生命周期（Phase 1-5），含并行和 cross-phase 技能
+- 技能按线性+并行混合组织：入口 → (init?) → spec → (clarify?) → research → review → gate → Phase 2 → Phase 3 → Phase 4 (含并行 cert) → Phase 5
 - 每个技能自包含，无外部依赖，修改或扩展只需编辑/新增 SKILL.md
-- 与 superpowers 官方技能体系可共存，互不冲突
 - 推荐使用支持 Tool-use 的模型（Claude 系列、DeepSeek 等），但 skills 本身模型无关
 - 仓库包含 OpenCode plugin（`.opencode/plugins/hw-pm.js`），一行配置即可安装
