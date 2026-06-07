@@ -1,5 +1,4 @@
 {
-  "skills": {
-    "paths": ["./skills"]
-  }
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["./.opencode/plugins/hw-pm.js"]
 }
