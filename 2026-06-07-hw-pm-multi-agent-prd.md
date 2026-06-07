@@ -55,21 +55,6 @@ digraph skills_overview {
 | `hw-pm-gate` | 必需 | 5 维度量化投资决策 | 置信度折衷、用户确认协议 |
 | `hw-pm-analyze` | 可选 | 交付前最终一致性审计 | 只标记不修改、审计日志 |
 
-### 与原始方案的关键差异
-
-| 维度 | 原始方案（PRD v1） | 实际交付 |
-|------|-------------------|----------|
-| 实现方式 | Python + AutoGen CLI | superpowers 风格 skills |
-| 运行环境 | 需 Python 环境、依赖安装 | 任意 agent 平台（OpenCode/Claude Code 等） |
-| 多智能体协调 | AutoGen GroupChatManager | agent 原生 Task 子 agent 派发 |
-| 配置 | YAML 文件、Python ConfigManager | SKILL.md 内联规范 + 协议约定 |
-| 产出物 | CLI 写入文件系统 | agent 工作流产生文件 |
-| 审查机制 | 无独立审查阶段 | hw-pm-review 5 层审查 |
-| 用户澄清 | 无 | hw-pm-clarify 可选澄清 |
-| 最终审计 | 无 | hw-pm-analyze 可选审计 |
-| 并行调研 | AutoGen Task Dispatch | 平台 Task 工具并行派发 |
-| 扩展性 | Python 模块扩展 | 新增 SKILL.md 即可 |
-
 ## User Stories
 
 1. 作为产品经理，我想用一条命令初始化产品项目并继承公司的战略和投资阈值配置，以便快速启动分析而不必每次都重新输入基础信息
