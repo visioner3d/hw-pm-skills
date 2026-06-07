@@ -5,5 +5,5 @@
   "description": "Hardware product manager multi-agent skills for AI coding assistants",
   "main": ".opencode/plugins/hw-pm.js",
   "keywords": ["hw-pm", "opencode", "skills", "product-management", "hardware"],
-  "license": "MIT"
+  "license": "Apache-2.0"
 }
