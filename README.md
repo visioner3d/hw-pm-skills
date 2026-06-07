@@ -18,11 +18,14 @@ Restart OpenCode and load the entry skill:
 Use the skill tool to load hw-pm
 ```
 
+Then `hw-pm` auto-detects project state and routes to the correct skill. New projects go through `hw-pm-init` first.
+
 ## Skills
 
 | Skill | Type | Description |
 |-------|------|-------------|
 | `hw-pm` | Entry | State routing, phase dispatch, role definitions |
+| `hw-pm-init` | Entry | Quick project initialization — directory structure, config templates, interactive field filling |
 | `hw-pm-spec` | Required | Config inheritance, investment thresholds, templates |
 | `hw-pm-clarify` | Optional | Resolve spec ambiguities with user before research |
 | `hw-pm-research` | Required | Dispatch 4 parallel subagents (strategy, market, user, finance) |
@@ -39,6 +42,7 @@ digraph workflow {
     optional [style=dashed, color=blue];
 
     entry [label="hw-pm", shape=doublecircle];
+    init [label="hw-pm-init"];
     spec [label="hw-pm-spec"];
     clarify [label="hw-pm-clarify", style=dashed, color=blue];
     research [label="hw-pm-research\n(4 subagents)"];
@@ -46,7 +50,9 @@ digraph workflow {
     gate [label="hw-pm-gate\n(5 dimensions)"];
     analyze [label="hw-pm-analyze", style=dashed, color=blue];
 
-    entry -> spec;
+    entry -> init [label="no config", color=red];
+    entry -> spec [label="has config"];
+    init -> entry;
     spec -> clarify [style=dashed, color=blue];
     clarify -> research [style=dashed, color=blue];
     spec -> research;

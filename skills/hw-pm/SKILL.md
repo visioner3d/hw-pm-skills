@@ -22,7 +22,7 @@ This skill is the **entry point** to the hw-pm skill system. It does no research
 - You already know which sub-skill applies (call it directly)
 - The task is single-agent research (use `dispatching-parallel-agents`)
 
-## The 7-Skill System
+## The 8-Skill System
 
 ```dot
 digraph hw_pm_system {
@@ -31,6 +31,7 @@ digraph hw_pm_system {
     optional [style=dashed, color=blue];
 
     entry [label="hw-pm (entry)", shape=doublecircle];
+    init [label="hw-pm-init", style=rounded];
     spec [label="hw-pm-spec"];
     clarify [label="hw-pm-clarify", style=dashed, color=blue];
     research [label="hw-pm-research\n(4 subagents)"];
@@ -38,7 +39,9 @@ digraph hw_pm_system {
     gate [label="hw-pm-gate\n(5 dimensions)"];
     analyze [label="hw-pm-analyze", style=dashed, color=blue];
 
-    entry -> spec;
+    entry -> init [label="no config", color=red];
+    entry -> spec [label="has config"];
+    init -> entry;
     spec -> clarify [style=dashed, color=blue];
     clarify -> research [style=dashed, color=blue];
     spec -> research;
@@ -54,7 +57,8 @@ digraph hw_pm_system {
 
 | Skill | Type | Input | Output |
 |-------|------|-------|--------|
-| `hw-pm-spec` | Required | Product idea | project.yaml, thresholds |
+| `hw-pm-init` | Entry | Project idea | Config templates, dir structure |
+| `hw-pm-spec` | Required | Config files | project.yaml, thresholds, SDD |
 | `hw-pm-clarify` | Optional | Ambiguous spec | Clarified spec |
 | `hw-pm-research` | Required | Spec + config | 4x MD + 4x JSON |
 | `hw-pm-review` | Required | Research outputs | discussion.md, readiness |
@@ -66,9 +70,10 @@ digraph hw_pm_system {
 ```
 Check artifacts in order:
 
-→ project.yaml present?            NO  ──  hw-pm-spec
+→ project.yaml present?            NO  ──  hw-pm-init (create config templates)
+                                      YES ──  continue
 → phase_1_strategy/*.md exist?     NO  ──  check clarify need
-                                     YES ──  hw-pm-research
+                                      YES ──  hw-pm-research
 → discussion.md present?           NO  ──  hw-pm-review
 → gate_reviews/*.md present?       NO  ──  hw-pm-gate
 → All present → read last gate result:
@@ -102,3 +107,5 @@ Review not APPROVE         → Gate closes before decision
 **Over-routing:** "I know this needs research, skip hw-pm." → hw-pm detects missing config that would break research.
 
 **Ignoring state:** Running review before all 8 output files exist. → Always check artifact presence first.
+
+**Skipping init:** Manually creating files instead of using hw-pm-init. → hw-pm-init ensures complete schema, correct commentary, and proper directory structure. Manual files often miss fields that downstream skills depend on.

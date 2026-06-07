@@ -125,6 +125,8 @@ product_line:
 ALL items must pass before leaving this skill:
 
 ```
+[ ] Project initialized? (company.yaml, product_line.yaml, project.yaml exist with
+    template structure — created by hw-pm-init or equivalent)
 [ ] Product one-line description is present and unambiguous?
 [ ] Company config loaded (company.yaml)?
 [ ] Product line selected and loaded (product_line.yaml)?
@@ -167,3 +169,5 @@ project:
 **Missing overrides:** Price band in product_line.yaml is $200-$600 but project needs $1000+. Project.yaml override exists for this purpose.
 
 **Skipping the hard gate:** "I'll define the spec more later" → downstream skills will fail because thresholds are missing. Complete the spec first.
+
+**Bypassing init:** Using hw-pm-spec directly without hw-pm-init. → hw-pm-spec checks for config file existence in its hard gate. If files are missing, route back through hw-pm → hw-pm-init first.

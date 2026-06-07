@@ -14,7 +14,7 @@
 
 ## 技能体系（Delivered）
 
-### 7 Skills Overview
+### 8 Skills Overview
 
 ```dot
 digraph skills_overview {
@@ -23,6 +23,7 @@ digraph skills_overview {
     optional [style=dashed, color=blue];
 
     entry [label="hw-pm\n入口路由", shape=doublecircle];
+    init [label="hw-pm-init\n项目初始化"];
     spec [label="hw-pm-spec\n需求定义"];
     clarify [label="hw-pm-clarify\n用户澄清", style=dashed, color=blue];
     research [label="hw-pm-research\n4 Agent 并行调研"];
@@ -30,7 +31,9 @@ digraph skills_overview {
     gate [label="hw-pm-gate\n投资决策"];
     analyze [label="hw-pm-analyze\n最终审计", style=dashed, color=blue];
 
-    entry -> spec;
+    entry -> init [label="无配置", color=red];
+    entry -> spec [label="有配置"];
+    init -> entry;
     spec -> clarify [style=dashed, color=blue];
     clarify -> research [style=dashed, color=blue];
     spec -> research;
@@ -48,6 +51,7 @@ digraph skills_overview {
 | 技能 | 类型 | 职责 | 关键机制 |
 |------|------|------|----------|
 | `hw-pm` | 入口 | 状态路由、阶段调度、角色定义 | 文件系统状态机 |
+| `hw-pm-init` | 入口 | 目录结构创建、配置模板生成、交互式字段填写 | 模板覆盖 + 优先填充 + 延迟默认值 |
 | `hw-pm-spec` | 必需 | 三级配置继承、投资阈值、需求模板 | company → product_line → project 合并 |
 | `hw-pm-clarify` | 可选 | 调研前消除需求歧义 | 单轮单问、多选优先、澄清日志 |
 | `hw-pm-research` | 必需 | 4 Agent 并行调度、数据规范 | Task 派发 + prompt 模板 + 矛盾仲裁 |
@@ -190,8 +194,8 @@ digraph skills_overview {
 ## Further Notes
 
 - 系统以 superpowers 风格的 skills 体系交付，支持 OpenCode、Claude Code、Codex 等主流 agent 平台
-- 7 项技能覆盖从需求定义到投资决策的完整 Phase 1 流程，含两个可选增强环节
-- 技能按严格线性依赖组织：入口 → spec → (clarify?) → research → review → gate → (analyze?)
+- 8 项技能覆盖从项目初始化到投资决策的完整 Phase 1 流程，含两个可选增强环节
+- 技能按严格线性依赖组织：入口 → (init?) → spec → (clarify?) → research → review → gate → (analyze?)
 - 每个技能自包含，无外部依赖，修改或扩展只需编辑/新增 SKILL.md
 - 与 superpowers 官方技能体系可共存，互不冲突
 - 推荐使用支持 Tool-use 的模型（Claude 系列、DeepSeek 等），但 skills 本身模型无关
