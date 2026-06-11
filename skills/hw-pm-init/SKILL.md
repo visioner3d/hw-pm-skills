@@ -66,7 +66,7 @@ Create the following structure under `PROJECT_DIR`:
 │   └── reports/                 # Consolidated reports (executive/master/per-phase)
 ```
 
-Use `mkdir -p` for each path. Verify all directories exist before proceeding.
+Create all directories listed above. Use your platform's native directory creation tool (e.g., `mkdir -p` on Linux/macOS, `mkdir` on Windows cmd, `New-Item -ItemType Directory -Force` in PowerShell). Verify all directories exist before proceeding.
 
 ### Step 3: Generate Config Templates
 
@@ -287,7 +287,7 @@ Correct field-replacement example:
 
 ## Common Mistakes
 
-**Skipping directory creation.** Agent tries to write files before verifying `mkdir -p`. → Always create dirs in Step 2 before writing any file.
+**Skipping directory creation.** Agent tries to write files before creating directories. → Always create dirs in Step 2 before writing any file. Use your platform's native directory creation method.
 
 **Overwriting existing project.** User already has `company.yaml` and runs init again. → Check for existing files first; ask user before overwriting.
 
