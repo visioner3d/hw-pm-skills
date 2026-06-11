@@ -28,6 +28,7 @@ Then `hw-pm` auto-detects project state and routes to the correct skill. New pro
 | `hw-pm-init` | Entry | Quick project initialization |
 | `hw-pm-spec` | 1 | Config inheritance, investment thresholds |
 | `hw-pm-clarify` | 1 | Resolve spec ambiguities (optional) |
+| `hw-pm-explore` | 1 | Explore adjacent possibilities before research (optional) |
 | `hw-pm-research` | 1 | 4 parallel subagents (strategy, market, user, finance) |
 | `hw-pm-review` | 1 | 5-layer completeness review |
 | `hw-pm-gate` | 1 | 5-dimension quantified investment decision |
@@ -58,6 +59,7 @@ digraph workflow {
     init [label="hw-pm-init"];
     spec [label="hw-pm-spec"];
     clarify [label="hw-pm-clarify", style=dashed, color=blue];
+    explore [label="hw-pm-explore\n(divergent)", style=dashed, color=blue];
     research [label="hw-pm-research\n(4 subagents)"];
     review [label="hw-pm-review\n(5 layers)"];
     gate [label="hw-pm-gate\n(5 dimensions)"];
@@ -77,8 +79,11 @@ digraph workflow {
     entry -> spec [label="has config"];
     init -> entry;
     spec -> clarify;
-    clarify -> research;
-    spec -> research;
+    clarify -> explore;
+    spec -> explore;
+    explore -> research [label="PM confirms"];
+    spec -> research [label="skip explore", style=dashed];
+    clarify -> research [label="skip explore", style=dashed];
     research -> review;
     review -> research [label="REJECT", color=red, style=dashed];
     review -> gate [label="APPROVE/CONDITIONAL"];

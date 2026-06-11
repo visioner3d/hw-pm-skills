@@ -11,6 +11,8 @@ Hardware product management treats products as **investments**. Each initiative 
 
 This skill is the **entry point** to the hw-pm skill system. It does no research itself—it inspects project state and routes to sub-skills.
 
+The system has **18 skills**: 17 convergent (narrowing toward decisions) and 1 divergent (`hw-pm-explore`, widening the possibility space before converging).
+
 ## When to Use
 
 - **New product assessment** — one-line product idea, no config yet
@@ -22,7 +24,7 @@ This skill is the **entry point** to the hw-pm skill system. It does no research
 - You already know which sub-skill applies (call it directly)
 - The task is single-agent research (use `dispatching-parallel-agents`)
 
-## The 17-Skill System
+## The 18-Skill System
 
 ```dot
 digraph hw_pm_system {
@@ -39,6 +41,7 @@ digraph hw_pm_system {
     init [label="hw-pm-init"];
     spec [label="hw-pm-spec"];
     clarify [label="hw-pm-clarify", style=dashed, color=blue];
+    explore [label="hw-pm-explore\n(divergent)", style=dashed, color=blue];
     research [label="hw-pm-research\n(4 subagents)"];
     review [label="hw-pm-review\n(5 layers)"];
     gate [label="hw-pm-gate\n(5 dimensions)"];
@@ -58,8 +61,11 @@ digraph hw_pm_system {
     entry -> spec [label="has config"];
     init -> entry;
     spec -> clarify;
-    clarify -> research;
-    spec -> research;
+    clarify -> explore;
+    spec -> explore;
+    explore -> research [label="PM confirms"];
+    spec -> research [label="skip explore", style=dashed];
+    clarify -> research [label="skip explore", style=dashed];
     research -> review;
     review -> research [label="REJECT", color=red, style=dashed];
     review -> gate [label="APPROVE/CONDITIONAL"];
@@ -93,6 +99,7 @@ digraph hw_pm_system {
 | `hw-pm-init` | — | Entry | Project idea | Config templates, dir structure |
 | `hw-pm-spec` | 1 | Required | Config files | project.yaml, thresholds, SDD |
 | `hw-pm-clarify` | 1 | Optional | Ambiguous spec | Clarified spec |
+| `hw-pm-explore` | 1 | Optional | Clear spec | Possibility landscape, enriched framing |
 | `hw-pm-research` | 1 | Required | Spec + config | 4x MD + 4x JSON |
 | `hw-pm-review` | 1 | Required | Research outputs | discussion.md, readiness |
 | `hw-pm-gate` | 1 | Required | Review + outputs | gate_review.md, Go/No-Go |
@@ -119,6 +126,7 @@ Check project state in order:
     → phase_1_strategy/*.md exist?  NO  ──  check config state:
                                          → config exists but spec ambiguous? → hw-pm-clarify
                                          → config incomplete/missing?        → hw-pm-spec
+                                         → config complete, spec clear?     → offer hw-pm-explore or research
                                          YES ──  hw-pm-research
     → discussion.md present?        NO  ──  hw-pm-review
     → gate_reviews/*.md present?    NO  ──  hw-pm-gate
@@ -151,6 +159,7 @@ Cross-phase and report skills run on demand:
 | **Strategic Planner** | 1 | Company alignment, portfolio impact | Subagent |
 | **Market Analyst** | 1 | Competitive analysis, TAM/SAM/SOM | Subagent |
 | **User Researcher** | 1 | Personas, pain points, JTBD | Subagent |
+| **Exploration Guide** | 1 | Adjacent possibilities, cross-industry analogy, tech trend scan | Current agent (you) |
 | **Business Analyst** | 1 | BOM, unit economics, NPV/IRR | Subagent |
 | **Product Manager** | 2 | PRD, technical spec, feature prioritization | Current agent (you) |
 | **Design Lead** | 3 | Industrial/mechanical/electrical/firmware design | Current agent (you) |
