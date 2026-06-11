@@ -75,14 +75,16 @@ artifacts/inventory:
     - validation_freeze.md
     - cert_matrix.md / cert_schedule.md / cert_compliance.md (optional)
   phase_5:
-    - npi_checklist.md
-    - supplier_status.md
-    - pilot_run_report.md
-    - ramp_plan.md
-    - launch_plan.md
-    - channel_strategy.md
-    - support_sla.md
-    - post_launch_review.md
+    npi:
+      - npi_checklist.md
+      - supplier_status.md
+      - pilot_run_report.md
+      - ramp_plan.md
+    launch:
+      - launch_plan.md
+      - channel_strategy.md
+      - support_sla.md
+      - post_launch_review.md
   shared:
     - bom.md / should_cost.md / cost_roadmap.md
     - risk_register.md / issue_tracker.md / eco_log.md

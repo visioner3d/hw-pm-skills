@@ -283,7 +283,7 @@ After all 4 agents return:
 2. **Read all outputs** — understand each agent's key findings
 3. **Build confidence matrix** — table of each analysis's confidence and quality
 4. **Identify contradictions** — cross-reference findings
-5. **Write discussion.md** — using the template from `hw-pm-review` (call that skill next)
+5. **Write discussion.md draft** — synthesize findings and contradictions into a draft `discussion.md` using the template structure from `hw-pm-review` (the review skill validates and finalizes this document). Call `hw-pm-review` next.
 
 ## Common Mistakes
 

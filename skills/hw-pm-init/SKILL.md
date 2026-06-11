@@ -55,7 +55,15 @@ Create the following structure under `PROJECT_DIR`:
 ├── project.yaml                 # Project config (clarification log)
 ├── artifacts/
 │   ├── phase_1_strategy/        # Research agent outputs
-│   └── gate_reviews/            # Gate decision reports
+│   ├── gate_reviews/            # Gate decision reports
+│   ├── phase_2/                 # PRD, technical spec, feature matrix
+│   ├── phase_3/                 # Design reviews, scorecard, issues, DFM
+│   ├── phase_4/                 # EVT/DVT/PVT reports, defect trends, cert matrix
+│   ├── phase_5/                 # NPI + Launch
+│   │   ├── npi/                  #   NPI checklist, ramp plan
+│   │   └── launch/               #   Launch plan, channel strategy, SLA
+│   ├── shared/                  # BOM, cost roadmap, risk register, ECO log (cross-phase)
+│   └── reports/                 # Consolidated reports (executive/master/per-phase)
 ```
 
 Use `mkdir -p` for each path. Verify all directories exist before proceeding.
@@ -158,6 +166,24 @@ Ask the user questions **one at a time**. After each answer, update the correspo
 - target_gross_margin: 55%
 是否调整？(A) 全部保留  (B) 选择调整
 ```
+
+**PM background (NEW)** — always ask last:
+```
+最后：你的专业背景是什么？
+  A) 机械工程 (ME)
+  B) 电子工程 (EE)
+  C) 工业设计 (ID)
+  D) 嵌入式/固件 (FW)
+  E) 供应链/制造
+  F) 软件/系统
+  G) 综合背景
+
+(Your answer determines how the system approaches domain-specific sections.
+In areas outside your expertise, the system will prompt you with "questions to ask
+your experts" rather than expecting you to make technical decisions directly.)
+```
+
+Record the answer in `project.yaml` under `project.pm_background`. Downstream skills (design-review, prototype, npi, cert) will read this to determine whether to activate "expert questioning mode" in unfamiliar domains.
 
 **Answer format:** Accept free-text input. For multi-value fields (strategy_points, competitors), accept newline-separated or comma-separated lists.
 

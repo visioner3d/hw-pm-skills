@@ -1,0 +1,22 @@
+# ──────────────────────────────────────────────
+# Company-Level Configuration (company.yaml)
+# ──────────────────────────────────────────────
+company:
+  name: "v3d"                                # 必填：公司名称
+
+  strategy_points:                           # 必填：公司战略要点（至少 1 条）
+    - "最值得信赖的 3D 传感器供应商，以客户为中心，以创新为矛，以技术为盾，持续创造价值"
+
+  industry: "3C"                             # 必填：所属行业（如: "Automotive, 3C, Industrial Metrology"）
+
+  # ── 投资阈值 ──
+  investment_thresholds:
+    min_tam: 50000000                        # 建议填写：最小 TAM（$），默认 $50M
+    min_npv: 10000                           # 可选：最小 NPV（$），默认 $10K
+    min_irr: 0.12                            # 可选：最低 IRR，默认 12%
+    min_gross_margin: 0.50                   # 可选：最低毛利率，默认 50%
+    max_risk_exposure: 50                    # 可选：最大风险评分，默认 50
+
+  # ── 财务参数 ──
+  wacc: 0.12                                 # 可选：加权平均资本成本，默认 12%
+  risk_free_rate: 0.05                       # 可选：无风险利率，默认 5%

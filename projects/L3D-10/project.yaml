@@ -1,0 +1,33 @@
+# ──────────────────────────────────────────────
+# Project Configuration (project.yaml) — Merged Spec
+# ──────────────────────────────────────────────
+project:
+  project_name: "L3D-10"
+  description: "高精度线激光 3D 相机"
+  phase_status: phase_2
+
+  # ── 澄清日志 ──
+  clarification_log: []
+
+company:
+  name: "v3d"
+  strategy_points:
+    - "最值得信赖的 3D 传感器供应商，以客户为中心，以创新为矛，以技术为盾，持续创造价值"
+  industry: "3C"
+  investment_thresholds:
+    min_tam: 50000000
+    min_npv: 10000
+    min_irr: 0.12
+    min_gross_margin: 0.50
+    max_risk_exposure: 50
+  wacc: 0.12
+  risk_free_rate: 0.05
+
+product_line:
+  name: "3D Line Laser Scanners"
+  brand_positioning: "最值得信赖的线激光 3D 相机"
+  target_gross_margin: 0.55
+  default_price_band:
+    min: 200
+    max: 300
+  key_competitors: []

@@ -192,13 +192,45 @@ Present the four output documents and the hard gate checklist to the user. Do no
 
 ### Step 7: Post-Launch Tracking
 
-After launch confirmation, return to `post_launch_review.md` at each scheduled review point. Update the document with actual vs. planned metrics. Flag escalations per the triggers defined in Step 5.
+After launch confirmation, return to `post_launch_review.md` at each scheduled review point. For each review, update the document by adding a dated section:
+
+```markdown
+## {30-day / 60-day / 90-day / 6-month / 12-month} Review — {date}
+
+### Actual vs. Planned
+
+| Metric | Planned | Actual | Variance | Status |
+|--------|---------|--------|----------|--------|
+| NPS | {target} | {actual} | ±{delta} | ✓/✗ |
+| Return rate | ≤{target}% | {actual}% | ±{delta} | ✓/✗ |
+| Channel sell-through | ≥{target}% | {actual}% | ±{delta} | ✓/✗ |
+| Support ticket volume | ≤{target}/mo | {actual}/mo | ±{delta} | ✓/✗ |
+| RMA turnaround | ≤{target}d | {actual}d | ±{delta} | ✓/✗ |
+| ASP vs. planned | ±{target}% | {actual} | ±{delta} | ✓/✗ |
+| Revenue vs. forecast | ≥{target}% | {actual}% | ±{delta} | ✓/✗ |
+
+### Escalations Triggered
+
+| Trigger | Metric | Value | Threshold | Action Taken |
+|---------|--------|-------|-----------|--------------|
+| {trigger} | {metric} | {value} | {threshold} | {action} |
+
+### Key Findings
+- {finding 1}
+- {finding 2}
+
+### Decisions
+- {decision 1}
+- {decision 2}
+```
+
+Flag escalations per the triggers defined in Step 5.
 
 If significant course correction is needed (recall, redesign, or discontinuation), escalate through the hw-pm entry point for a new investment decision cycle.
 
 ## Output Format
 
-Write to `artifacts/phase_5/`:
+Write to `artifacts/phase_5/launch/`:
 
 | File | Content |
 |------|---------|
@@ -221,6 +253,7 @@ ALL items must pass before launch:
 [ ] Channel inventory allocation defined with safety stock
 [ ] Support SLA and RMA流程 documented
 [ ] Post-launch review cadence scheduled with metric targets
+[ ] **Limiting Factor identified:** What single risk or gap most threatens launch success?
 [ ] User confirmed launch readiness
 ```
 

@@ -30,7 +30,7 @@ This skill establishes the three-level configuration system and the spec structu
 │  ├── strategy_points            │
 │  ├── default_investment_limits  │
 │  ├── industry / compliance      │
-│  └── default_llm_config         │
+│  └── wacc / risk_free_rate      │
 ├─────────────────────────────────┤
 │  product_line.yaml              │  ← shared within ONE product line
 │  ├── brand_positioning          │
@@ -142,14 +142,14 @@ Any FAIL → the spec is incomplete. Do not proceed to `hw-pm-research`.
 Default templates are inline below. Users may override by placing a file with the same name in their project config directory.
 
 ```yaml
-# company.yaml default template
+# company.yaml default template (same as hw-pm-init canonical defaults)
 company:
   strategy_points: []
   investment_thresholds:
-    min_tam: 100000000
-    min_npv: 1000000
-    min_irr: 0.15
-    min_gross_margin: 0.40
+    min_tam: 50000000
+    min_npv: 10000
+    min_irr: 0.12
+    min_gross_margin: 0.50
   industry: ""
 ```
 

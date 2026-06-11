@@ -40,6 +40,7 @@ Then `hw-pm` auto-detects project state and routes to the correct skill. New pro
 | `hw-pm-launch` | 5 | Go-to-market, channel, support setup |
 | `hw-pm-cost` | 2-5 | BOM cost-down & should-cost analysis |
 | `hw-pm-triage` | 2-5 | Risk register, issue tracker, ECO log |
+| `hw-pm-report` | — | Consolidate artifacts into human-readable reports |
 
 ## Workflow
 
@@ -70,6 +71,7 @@ digraph workflow {
     launch [label="hw-pm-launch", style=dashed, color=red];
     cost [label="hw-pm-cost", style=dashed, color=gray];
     triage [label="hw-pm-triage", style=dashed, color=gray];
+    report [label="hw-pm-report", style=dashed, color=teal];
 
     entry -> init [label="no config", color=red];
     entry -> spec [label="has config"];
@@ -88,7 +90,8 @@ digraph workflow {
     design -> proto;
     proto -> npi;
     npi -> launch;
-    launch -> entry [label="EOL review"];
+    launch -> report;
+    report -> entry [label="EOL"];
     proto -> cert [style=dashed, label="parallel"];
     cert -> npi;
     cost -> prd [style=dashed, label="parallel"];

@@ -1,0 +1,15 @@
+# ──────────────────────────────────────────────
+# Product-Line Configuration (product_line.yaml)
+# ──────────────────────────────────────────────
+product_line:
+  name: "3D Line Laser Scanners"             # 必填：产品线名称（如: "3D Line Laser Scanners"）
+
+  brand_positioning: "最值得信赖的线激光 3D 相机"  # 必填：品牌定位描述（1-2 句话）
+
+  target_gross_margin: 0.55                  # 建议填写：目标毛利率，默认 55%
+
+  default_price_band:                        # 建议填写：目标价格区间 [$min, $max]
+    min: 200                                 # 最低售价（$）
+    max: 300                                 # 最高售价（$）
+
+  key_competitors: []                        # 可选：主要竞争对手列表

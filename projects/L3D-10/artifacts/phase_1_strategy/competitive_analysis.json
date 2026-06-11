@@ -1,0 +1,108 @@
+{
+  "tam": {
+    "value": 450000000,
+    "unit": "USD",
+    "confidence": "medium",
+    "source": "Reports and Data, '3D Line Laser Camera Market' report (2024, 10% CAGR 2024-2034). Cross-validated with Data Insights Market ($2.5B broader line laser scanning 3D camera market, 2025). Conservative narrow-definition figure used."
+  },
+  "sam": {
+    "value": 112500000,
+    "unit": "USD",
+    "confidence": "medium",
+    "source": "Calculated as 25% of TAM based on 3C electronics share of industrial machine vision. Reference: Fortune Business Insights 'Industrial Machine Vision Market' (2026, 8.44% CAGR); Hikrobot 2025 annual report (3C = 16.16% of mobile robot revenue, adjusted upward for broader 3C inspection TAM)."
+  },
+  "som": {
+    "value": 1000000,
+    "unit": "USD",
+    "confidence": "low",
+    "source": "4,000 units × $250 ASP first-year estimate (~0.9% SAM). Based on pricing analysis of Chinese budget 3D line laser camera market (iRAYPLE $800–$3,000, Hikrobot $1,000–$5,000; L3D-10 targets new sub-$300 micro-inspection segment). Unit volume estimate assumes distribution partnerships in Guangdong/Jiangsu 3C manufacturing clusters."
+  },
+  "competitors": [
+    {
+      "name": "Keyence LJ-X8000 Series",
+      "price": 14000,
+      "confidence": "high",
+      "source": "Averroes.ai 'Cognex vs Keyence Vision System Comparison' (2026); keyence.com official product page. Price range $8,000–$20,000 for 3D systems; midpoint used."
+    },
+    {
+      "name": "Cognex In-Sight 3D-L4000",
+      "price": 14000,
+      "confidence": "high",
+      "source": "Averroes.ai comparison (2026); cognex.com product page. 3D systems range $8,000–$20,000; midpoint used."
+    },
+    {
+      "name": "LMI Technologies Gocator 2100",
+      "price": 5000,
+      "confidence": "medium",
+      "source": "LMI3d.com official product page (entry-level 2100 series); Polyga distribution pricing. 'Low cost, entry-level' positioning, estimated $3,000–$8,000 range."
+    },
+    {
+      "name": "LMI Technologies Gocator 6300",
+      "price": 12000,
+      "confidence": "medium",
+      "source": "LMI3d.com product page; Gocator 6300 datasheet (June 2025). High-end series with 6500 pts/profile; estimated $8,000–$15,000; midpoint used."
+    },
+    {
+      "name": "SmartRay ECCO X Series",
+      "price": 10000,
+      "confidence": "medium",
+      "source": "SmartRay.com press releases (Apr 2025, Sep 2024); distributor estimates. German precision sensors for electronics/wafer inspection; estimated $5,000–$15,000."
+    },
+    {
+      "name": "Micro-Epsilon scanCONTROL",
+      "price": 8500,
+      "confidence": "medium",
+      "source": "Micro-Epsilon official product page; 1stvision.com distribution listing. Estimated $5,000–$12,000 range."
+    },
+    {
+      "name": "Hikrobot Line Laser 3D Camera",
+      "price": 3000,
+      "confidence": "medium",
+      "source": "Hikrobotics.com machine vision product page; 2025 annual report (64.52B RMB revenue). Price estimated from industry analyst reports (Chinese vendors typically 40–60% below Western equivalents)."
+    },
+    {
+      "name": "iRAYPLE 3D Laser Line Profile Sensor",
+      "price": 1900,
+      "confidence": "medium",
+      "source": "irayple.com product page; QVIRO product listing; Digimax.it distribution. Dahua Technology subsidiary. Line structured light + speckle laser technology; estimated $800–$3,000."
+    },
+    {
+      "name": "Teledyne DALSA Z-Trak2",
+      "price": 10000,
+      "confidence": "medium",
+      "source": "1stvision.com product listing; Teledyne DALSA official page. IP67-rated industrial profiler."
+    }
+  ],
+  "market_trends": [
+    {
+      "trend": "AI/Deep Learning integration in 3D inspection is replacing rule-based algorithms; 63% of manufacturers plan AI vision expansion within 2 years",
+      "impact": "High",
+      "confidence": "high",
+      "source": "Cognex 'Future of Machine Vision' market report (Dec 2025); 36Kr Hikrobot VP interview on AI in industrial inspection (Apr 2026); NextMSC '3D Inspection Market' report (Feb 2026)"
+    },
+    {
+      "trend": "Cost-down pressure in 3C manufacturing: China mobile robot market growth decelerated to 8.75% (2024) from 57.6% (2021), driving extreme price sensitivity in automation equipment",
+      "impact": "High",
+      "confidence": "high",
+      "source": "QQ News / 36Kr Hikrobot IPO analysis (Jan 2025); Fortune Business Insights 'Industrial Machine Vision Market' (2026); Hikrobot 2025 annual report"
+    },
+    {
+      "trend": "Electronics component miniaturization (BGA pitch <0.3mm, micro-LED, wafer-level packaging) demands micron-level 3D precision beyond what 2D vision can provide",
+      "impact": "High",
+      "confidence": "high",
+      "source": "LMI Gocator 6300 datasheet (June 2025); SmartRay ECCO X 012 product launch (Apr 2025, smallest FOV 12mm for BGA/wafer); Keyence LJ-S8000 3D snapshot sensor page"
+    },
+    {
+      "trend": "Asia-Pacific is fastest-growing 3D scanning region; China manufacturing value-add $4.66T (29% of global share, 2023); automation investments accelerating",
+      "impact": "Medium",
+      "confidence": "medium",
+      "source": "NextMSC 'Industrial Sensors Market' report (Feb 2026); FMI '3D Laser Scanner Market' report (2025, 6.6% CAGR to $4.2B by 2035); Baumer Group $500M+ revenue milestone (2022)"
+    },
+    {
+      "trend": "Secular shift from 2D to 3D inspection in manufacturing: 3D captures height/volume/shape defects invisible to 2D; driving upgrade cycles across 3C factories",
+      "impact": "High",
+      "confidence": "high",
+      "source": "Cognex 'Boost Manufacturing Inspections with Laser Displacement' resource (Apr 2025); NextMSC '3D Inspection Market' report (Feb 2026); Vision Systems Design industry analysis"
+    }
+  ]
+}

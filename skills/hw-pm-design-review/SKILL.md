@@ -14,20 +14,21 @@ This skill manages the **design phase** of a hardware product — from concept e
 ## Phase Context
 
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  Phase 1    │     │  Phase 2    │     │  Phase 3    │     │  Phase 4    │
-│  Strategy   │ →   │  Design     │ →   │  Prototype  │ →   │  Launch     │
-│  & Research │     │  Review     │     │  & Validate │     │  & Ramp     │
-│ (spec→gate) │     │ (this skill)│     │ (future)    │     │ (future)    │
-└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐
+│  Phase 1    │  │  Phase 2    │  │  Phase 3    │  │  Phase 4    │  │  Phase 5    │
+│  Strategy   │→ │  PRD        │→ │  Design     │→ │  Prototype  │→ │  NPI &      │
+│  & Research │  │  (hw-pm-prd)│  │  Review     │  │  & Validate │  │  Launch     │
+│ (spec→gate) │  │             │  │ (this skill)│  │ (hw-pm-     │  │ (future)    │
+│             │  │             │  │             │  │  prototype) │  │             │
+└─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘
 ```
 
-Entry gate: Phase 1 Gate = "Go"
+Entry gate: Phase 1 Gate = "Go", PRD complete, `phase_status = "design"`
 Exit gate: Design freeze signed off by all domain leads
 
 ## When to Use
 
-- PRD is complete, Gate decision was "Go: next phase"
+- PRD is complete, Phase 1 Gate was "Go"
 - `phase_status` in project.yaml is "design"
 - Engineering resources are identified (ID/MD/EE/FW leads)
 - Need to track design maturity across multiple review rounds
@@ -321,8 +322,39 @@ Write to `artifacts/phase_3/` (create directory if not present):
 [ ] Inter-domain interface spec frozen
 [ ] Design freeze signed off (ID/MD/EE/FW leads)
 [ ] Prototype BOM ready for procurement
-[ ] User confirmed, phase_status updated to "prototype"
+[ ] **Limiting Factor identified:** What is the single bottleneck that determines the design freeze date?
+[ ] User confirmed, phase_status updated to "validate"
 ```
+
+## Questions to Ask Your Domain Experts
+
+As the PM, your value is not in answering every technical question — it is in asking the right ones. Before signing off on each review round, ask these questions to the respective domain lead. Listen for hedging, hand-waving, or deflection.
+
+### Industrial Design (ID)
+- "If we had to cut the BOM by 15%, which ID elements would you sacrifice first?"
+- "What surface finish or material choice are you least confident about for mass production?"
+- "Show me the worst-case tolerance stack on the most visible cosmetic seam."
+
+### Mechanical Engineering (MD)
+- "What's the one part you'd bet will fail first in reliability testing?"
+- "At this wall thickness and material, can the tool fill completely in under 2 seconds?"
+- "If the enclosure needs to grow by 3mm in any dimension, which direction costs us the least?"
+
+### Electrical Engineering (EE)
+- "Which component on the BOM has the worst availability outlook over the next 18 months?"
+- "What is the thermal margin on the hottest component at worst-case ambient + full load?"
+- "If we need to cut power consumption by 20%, where would you start?"
+
+### Firmware (FW)
+- "What hardware bug would be hardest to work around in firmware?"
+- "If the MCU family is discontinued mid-project, how many months to port?"
+- "Which sensor or peripheral has the least mature driver support?"
+
+### Cross-Domain
+- "What's the one thing the other domain doesn't understand about your constraints?"
+- "If we had to ship 3 months earlier, what would you cut — and what would break?"
+
+These questions do not replace formal review checklists. They supplement them with PM judgment.
 
 ## Common Mistakes
 

@@ -77,7 +77,11 @@ Load all Phase 1 outputs from `artifacts/phase_1_strategy/` and config files fro
 
 ### Step 3: Write PRD
 
-Write `prd.md` to `artifacts/phase_2/prd.md` with these chapters:
+**BEFORE using the template:** Write one page of free-form text answering one question: *"What is the single most important thing about this product — the one idea that, if lost, means the product has failed?"* Do not use bullet points. Do not reference the Phase 1 data. Write what you genuinely believe.
+
+This page becomes the PRD's philosophical anchor. The template sections that follow exist to pressure-test this belief, not to replace it.
+
+Then write `prd.md` to `artifacts/phase_2/prd.md` with these chapters:
 
 ```markdown
 # Product Requirements Document: {project_name}
@@ -253,17 +257,21 @@ Write `feature_matrix.md` to `artifacts/phase_2/feature_matrix.md`:
 
 **Effort:** S (≤1 week), M (1-4 weeks), L (1-3 months), XL (3+ months)
 **Business Impact:** 1 (low) → 5 (high), weighted by user pain + competitive necessity
+**Irreversibility:** How hard it is to change this decision after committing
+- **High** — ASIC selection, enclosure tooling, core architecture. Gate-level approval required before freezing.
+- **Medium** — PCB layout, firmware driver design. Significant rework cost if changed late.
+- **Low** — UI polish, logging format, minor mechanical adjustments. Reversible with minimal cost.
 
 ## Feature Matrix
 
-| ID | Feature | Category | Effort | Business Impact | Priority Score | Dependencies | Traces To |
-|----|---------|----------|--------|----------------|---------------|--------------|-----------|
-| FM-001 | Auto part detection | Must | M | 5 | 25 | Sensor hardware | UC-001, FR-001 |
-| FM-002 | Pass/fail display | Must | S | 5 | 25 | FR-003 | UC-001 |
-| FM-003 | Measurement result logging | Must | M | 4 | 20 | Database schema | UC-001 |
-| FM-004 | Deviation visualization | Should | L | 4 | 16 | FR-005 | UC-002 |
-| FM-005 | Multi-language UI | Could | L | 2 | 6 | — | UC-004 |
-| FM-006 | Remote monitoring dashboard | Won't | XL | 3 | — | Cloud infra | UC-005 |
+| ID | Feature | Category | Effort | Business Impact | Priority Score | Irreversibility | Dependencies | Traces To |
+|----|---------|----------|--------|----------------|---------------|----------------|--------------|-----------|
+| FM-001 | Auto part detection | Must | M | 5 | 25 | High | Sensor hardware | UC-001, FR-001 |
+| FM-002 | Pass/fail display | Must | S | 5 | 25 | Low | FR-003 | UC-001 |
+| FM-003 | Measurement result logging | Must | M | 4 | 20 | Low | Database schema | UC-001 |
+| FM-004 | Deviation visualization | Should | L | 4 | 16 | Medium | FR-005 | UC-002 |
+| FM-005 | Multi-language UI | Could | L | 2 | 6 | Low | — | UC-004 |
+| FM-006 | Remote monitoring dashboard | Won't | XL | 3 | — | Medium | Cloud infra | UC-005 |
 
 **Priority Score** = (Business Impact² × Effort Multiplier) where:
 - S = 1.0, M = 0.8, L = 0.5, XL = 0.3
@@ -408,6 +416,7 @@ Write `prd.json` alongside the markdown files for machine-readable consumption:
 [ ] User confirmed PRD before finalizing
 [ ] All files written to artifacts/phase_2/
 [ ] prd.json structured data file written
+[ ] **Limiting Factor identified:** What single constraint (cost, schedule, technical) most threatens the PRD's feasibility?
 [ ] project.yaml phase_status updated to "design"
 ```
 

@@ -1,0 +1,30 @@
+{
+  "npv": {
+    "value": 63487,
+    "confidence": "medium",
+    "source": "v3d financial model (WACC 12%, 3-year projection, Y0 NRE $150K)"
+  },
+  "irr": {
+    "value": 0.272,
+    "confidence": "medium",
+    "source": "v3d financial model (3-year cash flow, Y0-Y3)"
+  },
+  "gross_margin_percent": 51.0,
+  "bom_cost": {
+    "value": 85.0,
+    "confidence": "medium",
+    "source": "v3d BOM estimate for line laser 3D camera (9 line items at 1K volume)"
+  },
+  "selling_price": 250.0,
+  "bom_items": [
+    { "item": "Laser diode module (line laser)", "cost": 10.0 },
+    { "item": "CMOS image sensor (global shutter)", "cost": 15.0 },
+    { "item": "Optics (lens assembly)", "cost": 12.0 },
+    { "item": "Optical bandpass filter", "cost": 4.0 },
+    { "item": "FPGA for real-time processing", "cost": 18.0 },
+    { "item": "PCB (custom 4-layer)", "cost": 7.0 },
+    { "item": "Housing (aluminum + IP-rated)", "cost": 9.0 },
+    { "item": "Cabling & connectors (USB3, power, I/O)", "cost": 5.0 },
+    { "item": "Misc (mounting bracket, screws, labels, packing)", "cost": 5.0 }
+  ]
+}

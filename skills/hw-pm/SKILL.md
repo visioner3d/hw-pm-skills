@@ -116,8 +116,10 @@ Check project state in order:
                                        YES ──  read phase_status from project.yaml
 
 → phase_status: phase_1 (or absent) ──  check Phase 1 artifacts:
-    → phase_1_strategy/*.md exist?  NO  ──  check clarify need → hw-pm-spec
-                                        YES ──  hw-pm-research
+    → phase_1_strategy/*.md exist?  NO  ──  check config state:
+                                         → config exists but spec ambiguous? → hw-pm-clarify
+                                         → config incomplete/missing?        → hw-pm-spec
+                                         YES ──  hw-pm-research
     → discussion.md present?        NO  ──  hw-pm-review
     → gate_reviews/*.md present?    NO  ──  hw-pm-gate
     → last gate result:

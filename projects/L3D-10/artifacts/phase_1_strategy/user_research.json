@@ -1,0 +1,52 @@
+{
+  "personas": [
+    {
+      "name": "Precision-Focused Quality Engineer",
+      "demographics": "Age 28–45; degree in mechanical/electrical/optical engineering; works at 3C contract manufacturer or OEM in Shenzhen/Kunshan/Suzhou; annual income $25K–$55K USD",
+      "goals": "Detect micro-defects (scratches, solder joint voids, tilts) on high-speed production lines (60+ units/min); reduce false rejection rate below 1%; integrate inspection data into MES for traceability",
+      "frustrations": "Existing sensors at $500+ are cost-prohibitive for multi-station deployment; cheaper alternatives ($150–$200) lack enough resolution (Z-axis noise >10 µm), causing escapes; calibration drifts after 4–6 hours in factory-floor temperature swings (25°C–45°C)",
+      "context": "Mounts camera on gantry or robot arm above conveyor belt in factory with ambient dust/vibration. Inspects 5–20 different SKUs per shift. Uses PC with GigE/U2P interface and runs proprietary vision software. Confidence: Medium"
+    },
+    {
+      "name": "Cost-Conscious Production Line Manager",
+      "demographics": "Age 32–50; role production supervisor / process engineering manager at mid-sized 3C assembly plant (200–1,000 employees); annual income $20K–$40K USD; responsible for line OEE and capex budget",
+      "goals": "Minimize per-station inspection cost to enable 100% inline QA across 10+ stations; reduce training time for new inspectors; justify ROI to plant director within one quarter",
+      "frustrations": "Budget constraints force spot-check (sampling 1–5%) rather than 100% inspection; replacing existing 2D camera systems requires retraining operators; downtime per sensor swap eats into OEE targets",
+      "context": "Evaluates sensors alongside integrators during line retrofits. Needs plug-and-play compatibility with existing industrial PCs and PLCs (EtherCAT/Modbus). Relies on vendor application notes to compare specs. Confidence: Medium"
+    },
+    {
+      "name": "System Integrator Architect",
+      "demographics": "Age 30–55; technical lead at machine vision integration firm; serves 3C, automotive, and semiconductor clients; annual income $40K–$80K USD",
+      "goals": "Recommend one sensor platform that covers 80% of client inspection needs to reduce qualification effort; minimize SKU count in BOM to simplify supply chain; deliver turnkey solutions with ≤2 weeks of integration",
+      "frustrations": "Each client requires a different sensor brand, complicating spares inventory; inconsistent SDK quality across vendors causes integration delays; lack of standardized 3D calibration targets makes field recalibration unreliable",
+      "context": "Deploys at greenfield and brownfield lines. Writes C++/C# wrappers around vendor SDKs. Needs sensor with open APIs, good documentation, and sample code. Values pre-calibrated factory units that ship with NIST-traceable certificate. Confidence: Low"
+    }
+  ],
+  "pain_points": [
+    {
+      "description": "Cost barrier to 100% inline inspection — high-precision sensors at $500–$1,200 force sampling inspection, missing 2–5% of defects",
+      "severity": "high",
+      "frequency": "high"
+    },
+    {
+      "description": "Insufficient Z-axis accuracy in budget sensors — sub-$200 sensors exhibit Z-axis noise >10–15 µm, insufficient for PCB solder joint and connector coplanarity inspection",
+      "severity": "high",
+      "frequency": "high"
+    },
+    {
+      "description": "Calibration drift under thermal variation — factory-floor temperature swings (25°C–45°C) cause laser line shift requiring recalibration halts every 4–6 hours, reducing uptime by 3–5%",
+      "severity": "high",
+      "frequency": "medium"
+    },
+    {
+      "description": "SDK fragmentation and poor documentation — each vendor ships proprietary SDK with inconsistent APIs; integrators spend 2–4 weeks per brand on driver integration",
+      "severity": "medium",
+      "frequency": "high"
+    },
+    {
+      "description": "Difficult field recalibration without metrology expertise — sensor replacement requires specialized gauge blocks and trained technicians; smaller factories face 1–2 days downtime per swap",
+      "severity": "medium",
+      "frequency": "medium"
+    }
+  ]
+}

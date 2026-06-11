@@ -37,7 +37,7 @@ This skill operates during the **manufacturing** phase. After user confirmation,
 
 ## NPI Readiness Checklist
 
-Create the following checklist in `artifacts/phase_5/npi_checklist.md`. Every item must be assessed and any critical blocker resolved before pilot run.
+Create the following checklist in `artifacts/phase_5/npi/npi_checklist.md`. Every item must be assessed and any critical blocker resolved before pilot run.
 
 ### Materials
 - [ ] **BOM fully released** — all part numbers assigned and frozen
@@ -71,7 +71,7 @@ Create the following checklist in `artifacts/phase_5/npi_checklist.md`. Every it
 
 ## Supplier Readiness
 
-For each key part or assembly (especially sole-source and long-lead items), assess and write to `artifacts/phase_5/supplier_status.md`:
+For each key part or assembly (especially sole-source and long-lead items), assess and write to `artifacts/phase_5/npi/supplier_status.md`:
 
 | Part / Module | Supplier | Lead Time | Capacity vs Peak | QC Status | Risk | Mitigation |
 |---|---|---|---|---|---|---|
@@ -104,7 +104,7 @@ Plan and execute a controlled pilot of **100–500 units** (adjust for product c
 
 ## Pilot Run Analysis
 
-After pilot, write to `artifacts/phase_5/pilot_run_report.md`. Include:
+After pilot, write to `artifacts/phase_5/npi/pilot_run_report.md`. Include:
 
 - **Lot summary** — date, quantity, stations used, shift hours
 - **Overall yield** — pass / fail / rework counts
@@ -116,7 +116,7 @@ After pilot, write to `artifacts/phase_5/pilot_run_report.md`. Include:
 
 ## Ramp Plan
 
-Write `artifacts/phase_5/ramp_plan.md` with weekly targets and resource requirements:
+Write `artifacts/phase_5/npi/ramp_plan.md` with weekly targets and resource requirements:
 
 ### Ramp curve (example)
 
@@ -135,12 +135,12 @@ Write `artifacts/phase_5/ramp_plan.md` with weekly targets and resource requirem
 
 ## Output Format
 
-All artifacts go under `artifacts/phase_5/`:
+All artifacts go under `artifacts/phase_5/npi/`:
 
-- `artifacts/phase_5/npi_checklist.md` — NPI readiness items with status
-- `artifacts/phase_5/supplier_status.md` — supplier assessment per part
-- `artifacts/phase_5/pilot_run_report.md` — pilot results and analysis
-- `artifacts/phase_5/ramp_plan.md` — volume ramp schedule
+- `artifacts/phase_5/npi/npi_checklist.md` — NPI readiness items with status
+- `artifacts/phase_5/npi/supplier_status.md` — supplier assessment per part
+- `artifacts/phase_5/npi/pilot_run_report.md` — pilot results and analysis
+- `artifacts/phase_5/npi/ramp_plan.md` — volume ramp schedule
 
 ## Hard Gate Checklist
 
@@ -151,6 +151,7 @@ Before user confirmation and phase transition to `"launch"`:
 [ ] Key suppliers assessed and ready
 [ ] Pilot run completed with yield analysis
 [ ] Ramp plan created with weekly targets
+[ ] **Limiting Factor identified:** What single constraint (supplier, yield, capacity) gates the production ramp?
 [ ] User confirmed, phase_status updated to "launch"
 ```
 
@@ -159,7 +160,7 @@ Before user confirmation and phase transition to `"launch"`:
 This skill reads from:
 - `artifacts/phase_4/` — PVT results (yield, open issues)
 - `company.yaml` — target margin, cost constraints
-- `product.yaml` — BOM, spec, volume targets
+- `project.yaml` — BOM, spec, volume targets
 
 ## Common Mistakes
 

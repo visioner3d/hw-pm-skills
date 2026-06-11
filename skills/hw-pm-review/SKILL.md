@@ -30,11 +30,11 @@ These are separate. A review that fails means the gate cannot meaningfully execu
 ```dot
 digraph five_layers {
     rankdir=TB;
-    l1 [label="Layer 1: 流程合规\n该走的步骤都走了吗？", shape=box];
-    l2 [label="Layer 2: 产物完整\n该有的文件都有吗？", shape=box];
-    l3 [label="Layer 3: 数据覆盖\n每份报告达标了吗？", shape=box];
-    l4 [label="Layer 4: 交叉一致\n结论打架吗？", shape=box];
-    l5 [label="Layer 5: 就绪度\n能进 Gate 吗？", shape=box];
+    l1 [label="Layer 1: Process Compliance\n(流程合规：该走的步骤都走了吗？)", shape=box];
+    l2 [label="Layer 2: Artifact Completeness\n(产物完整：该有的文件都有吗？)", shape=box];
+    l3 [label="Layer 3: Data Coverage\n(数据覆盖：每份报告达标了吗？)", shape=box];
+    l4 [label="Layer 4: Cross-Consistency\n(交叉一致：结论打架吗？)", shape=box];
+    l5 [label="Layer 5: Readiness Assessment\n(就绪度：能进 Gate 吗？)", shape=box];
 
     l1 -> l2 -> l3 -> l4 -> l5;
 }
@@ -119,6 +119,12 @@ Compare findings across agents:
 [ ] Competitor features ↔ BOM allocation — plausible?
 [ ] Confidence levels across agents — no systematic overconfidence?
 ```
+
+**Overconfidence Detection (MANDATORY):**
+
+Count all data points that claim "high" confidence but cite derived calculations, industry averages, or assumptions (rather than published reports, official pricing, datasheets).
+
+If ≥30% of "high" confidence data points fall into this category → flag as **"Systematic Overconfidence Risk"**. This means the analysis reads as more certain than it actually is. The gate decision based on this data will give a false sense of precision. Output MUST state: "Data appears more confident than sourcing warrants. Review confidence annotations before gate."
 
 For each inconsistency, document:
 - Which agents disagree

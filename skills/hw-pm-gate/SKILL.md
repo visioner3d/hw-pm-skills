@@ -39,8 +39,6 @@ Score = TAM / min_tam (capped at 1.0)
 PASS  = Score ≥ 1.0
 ```
 
-Business analysts may define their own thresholds and rationale, but all thresholds and rationale must be documented in the spec section.
-
 ### Dimension 2: Financial Health (25%)
 
 ```
@@ -124,6 +122,32 @@ digraph gate_process {
 
 Weighted PASS = sum over dimensions of (PASS ? weight : 0), adjusted by confidence.
 
+## Pre-Mortem (BEFORE scoring)
+
+**Purpose:** A pre-mortem imagines the product has failed and works backward to identify causes. This surfaces risks the structured scoring might miss and counteracts the optimism bias inherent in any proposal.
+
+Before rendering the final score, execute this step:
+
+```
+Imagine it is 3 years from now. {project_name} has failed commercially.
+The product was developed and shipped, but it did not meet its objectives.
+
+Write 3-5 specific failure scenarios. For each:
+1. What was the root cause? (one sentence)
+2. How could we have detected this early? (concrete signal)
+3. Is this risk currently visible in our Phase 1 data? (Yes / Partially / No)
+
+FAILURE SCENARIO 1: {title}
+  Root cause: {sentence}
+  Early signal: {detectable sign that would have warned us}
+  Visible today: {Yes / Partially / No — and if No, what data would we need?}
+
+FAILURE SCENARIO 2: ...
+FAILURE SCENARIO 3: ...
+```
+
+The pre-mortem output is appended to the gate report. If any failure scenario's root cause is invisible in current data AND has no mitigation path, the Decision Confidence drops one level (e.g., high → medium).
+
 ## Gate Report Format
 
 Write to `artifacts/gate_reviews/gate_1_review.md`:
@@ -169,10 +193,17 @@ Gate 1 Review: {Go/No-Go} (confidence: {level}). {N}/{5} dimensions passed.
 
 After writing the gate report:
 
-1. **Present** the report to the user
-2. **Wait** for confirmation — do not proceed without it
-3. **On confirm**: archive the decision, route to next phase (or terminate for No-Go)
-4. **On override**: user may override Go→No-Go or No-Go→Go. Document the override reason
+1. **Present** the report to the user, including the pre-mortem section
+2. **De-biasing question (MANDATORY)** — Before accepting the recommendation, ask the user:
+   ```
+   "If this product were being developed by a competitor instead of your team,
+   and you were evaluating it as an external analyst — would you give it a Go or No-Go?
+   Why?"
+   ```
+   Record the answer in the gate report. If the answer differs from the scored recommendation, this is a red flag — discuss before proceeding.
+3. **Wait** for confirmation — do not proceed without it
+4. **On confirm**: archive the decision, route to next phase (or terminate for No-Go)
+5. **On override**: user may override Go→No-Go or No-Go→Go. Document the override reason
 
 ## Common Mistakes
 
