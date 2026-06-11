@@ -137,81 +137,111 @@ project:
                                              # 如: "High precision 3D line laser scanner
                                              #      for industrial quality inspection"
 
-  clarification_log: []                      # 可选：澄清日志，由 hw-pm-clarify 写入
+  clarification_log: []                      # 澄清日志，由 hw-pm-clarify 写入
+
+  # ── 调研自动补全的字段 ──
+  # 以下字段如留空，由 hw-pm-research 的 Market/Business Analyst 自动推断：
+  #   - product_line.default_price_band   → Market Analyst 从竞品数据推算
+  #   - product_line.key_competitors      → Market Analyst 从 web search 发现
+  #   - product_line.brand_positioning    → Strategic Planner 从 strategy+industry 推断
+  #   - investment_thresholds (all)       → 使用 company.yaml 默认值
+  # 自动推断的数据点标注 confidence: medium
 ```
 
 ### Step 4: Interactive Field Filling
 
-Ask the user questions **one at a time**. After each answer, update the corresponding YAML file in-place.
+The goal is to collect the **minimum viable information** to start research — not to exhaustively configure every field. Research agents will fill gaps automatically.
 
-**Priority order — fill these first:**
-1. `company.name` — "公司名称是什么？"
-2. `company.strategy_points` — "公司的核心战略要点是什么？" (至少 1 条，可多条)
-3. `company.industry` — "所属行业？" (如 "Automotive, 3C")
-4. `product_line.name` — "产品线名称？"
-5. `product_line.brand_positioning` — "品牌定位描述？"
-6. `project.description` — "一句话描述这个产品？"
+**Ask only these 3 questions, one at a time:**
 
-**Second pass — suggest defaults but confirm:**
-7. `product_line.default_price_band` — "目标价格区间？如无则留空"
-8. `product_line.key_competitors` — "已知的主要竞争对手？可留空，后续补充"
-9. `company.investment_thresholds` — "投资阈值是否使用默认值？" (显示当前默认值)
-
-**Deferred fields** — show once at end:
+**Question 1** — `project.description`:
 ```
-以下字段已填入默认值，可在后续步骤中随时更新：
-- min_npv: $10K
-- min_irr: 12%
-- wacc: 12%
-- target_gross_margin: 55%
-是否调整？(A) 全部保留  (B) 选择调整
+这个产品是什么？一句话描述。
+（越具体越好：谁用、做什么、为什么比现有方案好）
 ```
 
-**PM background (NEW)** — always ask last:
+**Question 2** — `company.strategy_points`:
 ```
-最后：你的专业背景是什么？
-  A) 机械工程 (ME)
-  B) 电子工程 (EE)
-  C) 工业设计 (ID)
-  D) 嵌入式/固件 (FW)
-  E) 供应链/制造
-  F) 软件/系统
-  G) 综合背景
-
-(Your answer determines how the system approaches domain-specific sections.
-In areas outside your expertise, the system will prompt you with "questions to ask
-your experts" rather than expecting you to make technical decisions directly.)
+公司的核心战略要点是什么？（至少1条）
 ```
 
-Record the answer in `project.yaml` under `project.pm_background`. Downstream skills (design-review, prototype, npi, cert) will read this to determine whether to activate "expert questioning mode" in unfamiliar domains.
+**Question 3** — `company.industry`:
+```
+这个产品属于哪个行业/市场？
+如: "Automotive, 3C, Industrial Metrology"
+```
 
-**Answer format:** Accept free-text input. For multi-value fields (strategy_points, competitors), accept newline-separated or comma-separated lists.
+Update the corresponding YAML fields in-place after each answer.
+
+**Then show a single confirmation screen:**
+
+```
+┌──────────────────────────────────────────────────────┐
+│  配置就绪，可以开始调研。                               │
+│                                                      │
+│  产品描述:     {project.description}                   │
+│  战略要点:     {strategy_points}                       │
+│  所属行业:     {company.industry}                      │
+│                                                      │
+│  ── 以下已按默认值或自动填充配置 ──                      │
+│  公司名称:     {从目录名/上下文推断}                     │
+│  价格区间:     待 Market Analyst 自动补全                │
+│  竞争对手:     待 Market Analyst 自动识别                │
+│  投资阈值:     TAM≥$50M, NPV≥$10K, IRR≥12%,           │
+│               毛利率≥50%                               │
+│  PM背景:      综合 (可随时更新)                         │
+│                                                      │
+│  [A] 直接开始调研    [B] 调整其中几项    [C] 详细配置    │
+│      (推荐)              (选择性修改)     (逐项问答)     │
+└──────────────────────────────────────────────────────┘
+```
+
+**Option A (recommended):** Proceed to Step 5 immediately. Research agents can autonomously determine competitors, price bands, and brand positioning — often more accurately than a PM's memory.
+
+**Option B:** Let the user pick which fields to adjust. Only ask about those fields.
+
+**Option C:** Fall back to the full question sequence (see legacy behavior below). Only if the user explicitly requests detailed control.
+
+### Legacy Behavior (Option C only)
+
+If the user chooses detailed configuration, ask these additional questions one at a time:
+- `product_line.name`
+- `product_line.default_price_band`
+- `product_line.key_competitors`
+- `product_line.brand_positioning`
+- `company.investment_thresholds`
+- PM background
+- Deferred financial parameters (wacc, risk_free_rate)
 
 ### Step 5: Project Summary
 
-After all questions answered, display a summary:
+After option A or B is selected, display:
 
 ```
-┌─────────────────────────────────────────────┐
-│  Project Initialization Complete             │
-├─────────────────────────────────────────────┤
-│  Project:       {PROJECT_NAME}               │
-│  Company:       {company.name}               │
-│  Industry:      {company.industry}            │
-│  Product Line:  {product_line.name}           │
-│  Description:   {project.description}         │
-│  Price Band:    ${min} – ${max}               │
-│  Competitors:   {count} listed                │
-│                                              │
-│  Files created:                               │
-│    ✓ company.yaml                             │
-│    ✓ product_line.yaml                        │
-│    ✓ project.yaml                             │
-│    ✓ artifacts/phase_1_strategy/              │
-│    ✓ artifacts/gate_reviews/                  │
-├─────────────────────────────────────────────┤
-│  Next: Loading hw-pm to proceed to spec...    │
-└─────────────────────────────────────────────┘
+┌───────────────────────────────────────────────┐
+│  Project Initialized for Research              │
+├───────────────────────────────────────────────┤
+│  Project:       {PROJECT_NAME}                 │
+│  Description:   {project.description}           │
+│  Industry:      {company.industry}              │
+│  Strategy:      {strategy_points summary}       │
+│                                                │
+│  Auto-inferred by research agents:              │
+│    → Competitors, price band, market size       │
+│    → Brand positioning, target margin           │
+│                                                │
+│  Files created:                                 │
+│    ✓ company.yaml                               │
+│    ✓ product_line.yaml                          │
+│    ✓ project.yaml                               │
+│    ✓ artifacts/phase_1_strategy/                │
+│    ✓ artifacts/gate_reviews/                    │
+│    ✓ artifacts/phase_2..5/ + shared/ + reports/ │
+├───────────────────────────────────────────────┤
+│  Next: hw-pm → hw-pm-spec → hw-pm-research     │
+│  Research agents will fill configuration gaps  │
+│  from web search and market data.              │
+└───────────────────────────────────────────────┘
 ```
 
 ### Step 6: Route to hw-pm
@@ -220,6 +250,11 @@ Load the `hw-pm` skill. The state machine will detect `project.yaml` exists and 
 
 ```
 Use the skill tool to load hw-pm
+```
+
+## Template Storage
+
+PM-filled values are written to `project.yaml`. Auto-inferred values are written by research agents directly to their output files. The project.yaml records whether a field was PM-provided or auto-inferred:
 ```
 
 ## What This Skill Does NOT Do

@@ -174,9 +174,10 @@ Cross-phase and report skills run on demand:
 
 ```
 Phase 1:
-  Spec not complete          → Gate closes before research
-  Research outputs missing   → Gate closes before review
-  Review not APPROVE         → Gate closes before decision
+  Spec not complete (minimal: description, strategy_points, industry)
+                                         → Gate closes before research
+  Research outputs missing               → Gate closes before review
+  Review not APPROVE                     → Gate closes before decision
 
 Phase 2:
   PRD not complete           → Gate closes before design

@@ -124,18 +124,24 @@ product_line:
 
 ALL items must pass before leaving this skill:
 
+**Minimal spec (sufficient to start research):**
 ```
-[ ] Project initialized? (company.yaml, product_line.yaml, project.yaml exist with
-    template structure — created by hw-pm-init or equivalent)
-[ ] Product one-line description is present and unambiguous?
-[ ] Company config loaded (company.yaml)?
-[ ] Product line selected and loaded (product_line.yaml)?
-[ ] All investment thresholds defined (min_tam, min_npv, min_irr, min_margin)?
-[ ] Minimum 3 evaluation dimensions defined?
-[ ] Project directory created with merged project.yaml written?
+[ ] project.yaml exists with a concrete, unambiguous product description
+[ ] company.strategy_points has at least 1 entry
+[ ] company.industry is set
+[ ] investment_thresholds exist (default values from company.yaml template are acceptable)
+[ ] Minimum 3 evaluation dimensions defined (default: Market, Financial, Margin, Risk, Strategic)
 ```
 
-Any FAIL → the spec is incomplete. Do not proceed to `hw-pm-research`.
+**Full spec (if PM wants to pre-configure before research — optional):**
+```
+[ ] product_line.default_price_band defined (otherwise auto-inferred by Market Analyst)
+[ ] product_line.key_competitors defined (otherwise auto-inferred by Market Analyst)
+[ ] company.name set (otherwise inferred from project context)
+```
+
+Either state is valid. Research agents will fill gaps with auto-inferred data and mark those data points with `confidence: medium`.
+Any FAIL on minimal spec → the spec is incomplete. Do not proceed to `hw-pm-research`.
 
 ## Template System
 

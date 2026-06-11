@@ -79,8 +79,15 @@ Context (READ ONLY — do not modify):
 - Project: {project_name}
 - Description: {project.description}
 - Company strategy: {company.strategy_points}
-- Price band: {product_line.default_price_band if set}
-- Key competitors: {product_line.key_competitors if set}
+- Price band: {product_line.default_price_band if set, else "NOT PROVIDED — infer from market data"}
+- Key competitors: {product_line.key_competitors if set, else "NOT PROVIDED — discover via web search"}
+- Target gross margin: {product_line.target_gross_margin if set, else use company default}
+- Industry: {company.industry}
+
+Auto-inference rule:
+  If any context field is marked "NOT PROVIDED", you MUST infer a reasonable value
+  from web search and market data. Annotate all auto-inferred data points with
+  confidence: medium and source: "auto-inferred from {method}".
 
 Your task: Produce {output type} per the mandatory sections below.
 
@@ -107,8 +114,14 @@ Task completion checklist (pass ALL before returning):
 **Market Analyst:**
 ```
 ## 1. Competitive Analysis (table: ≥3 competitors, name/price/features/positioning/confidence/source)
+     If no competitors were provided in config, DISCOVER them via web search using
+     "{industry} {product_description}" as the search query.
+     Include the price band of each competitor as the basis for auto-inferring target ASP.
 ## 2. Market Sizing (TAM + SAM + SOM, each with value/unit/confidence/source)
 ## 3. Market Trends (≥3, each with trend/impact/confidence/source)
+## 4. Auto-Inferred Target Price Band (if not provided in config)
+     Based on competitor pricing data, recommend a target price band [$min, $max].
+     Annotate with confidence: medium, source: "inferred from competitor pricing".
 ## Key Recommendations
 ```
 
@@ -122,9 +135,14 @@ Task completion checklist (pass ALL before returning):
 **Business Analyst:**
 ```
 ## 1. Unit Economics Model (ASP, channel cost, BOM, gross margin)
+     If target price band not provided, use the competitor median ASP from Market Analyst
+     output as the basis for ASP estimation.
 ## 2. Bill of Materials (≥5 line items, each with cost+confidence+source)
 ## 3. Three-Year Financial Projection (table by year)
 ## 4. NPV + IRR + Breakeven + Payback Period
+     Use company.yaml investment_thresholds for WACC and risk-free rate.
+     If any threshold is missing, use defaults: WACC=12%, risk_free=5%.
+## 5. Auto-Inferred Metrics (summary of all metrics inferred rather than configured)
 ```
 
 ### Agent-Specific Checklists
@@ -135,6 +153,8 @@ Task completion checklist (pass ALL before returning):
 [ ] TAM + SAM + SOM with NUMERIC values
 [ ] Every data point has confidence + source annotation
 [ ] Market trends ≥3 with impact assessment
+[ ] If competitors were auto-discovered (not in config), all are annotated confidence: medium
+[ ] If price band was auto-inferred, annotated confidence: medium, source: "inferred from competitor data"
 [ ] JSON file written alongside Markdown
 ```
 
@@ -145,6 +165,7 @@ Task completion checklist (pass ALL before returning):
 [ ] NPV + IRR both calculated
 [ ] Breakeven units + payback period
 [ ] All monetary values in consistent currency+unit
+[ ] Auto-inferred metrics (ASP, price band if not configured) annotated confidence: medium
 [ ] JSON file written alongside Markdown
 ```
 
